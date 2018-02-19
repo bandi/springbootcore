@@ -18,8 +18,8 @@ public class UserSecurityAspect {
     //What kind of method calls I would intercept
     //execution(* PACKAGE.*.*(..))
     //Weaving & Weaver
-    //@Before("execution(public com.ir.offer.service.*.*(..))")
-    @Before("within(com.ir.offer.service.*)")
+    //@Before("execution(public com.ir.service.*.*(..))")
+    @Before("within(com.ir.service.*)")
     public void before(JoinPoint joinPoint){
         //Advice
         logger.info(" Check for user access ");

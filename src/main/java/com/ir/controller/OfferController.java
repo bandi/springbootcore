@@ -2,6 +2,9 @@ package com.ir.controller;
 
 import com.ir.dto.OfferDto;
 import com.ir.service.OfferService;
+import org.apache.log4j.Appender;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,25 +29,22 @@ public class OfferController {
      app.post('/postback/save' , (req,res)=>offerCtrl.postback(req,res));
      */
 
+    //private static Logger LOGGER = Logger.getLogger(OfferController.class);
+    private static final Logger LOGGER = LogManager.getLogger(OfferController.class);
+
     @Autowired
     private OfferService offerService;
 
 
     @RequestMapping(value = "/getOffers",method = RequestMethod.GET)
     public ResponseEntity<Collection<OfferDto>> getResources() {
-        //List<Offer> offers = offerService.getAllOffers();
-        List<OfferDto> offers = new ArrayList();
-        OfferDto offerDto = new OfferDto();
-        offerDto.setId(1L);
-        offerDto.setContent("sampleContent1");
-        offerDto.setTitle("sample1");
-        OfferDto offerDto1 = new OfferDto();
-        offerDto1.setId(2L);
-        offerDto1.setContent("sampleContent2");
-        offerDto1.setTitle("sample2");
-        offers.add(offerDto);
-        offers.add(offerDto1);
-        return new ResponseEntity<>(offers, HttpStatus.OK);
+        List<OfferDto> offers = offerService.getAllOffers();
+        Appender appender = LOGGER.getAppender("ConsoleAppender");
+
+        LOGGER.addAppender(appender);
+        LOGGER.info("the controller is hit");
+        LOGGER.debug("the controller is hit");
+        return new ResponseEntity(offers, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/hello",method = RequestMethod.GET)
