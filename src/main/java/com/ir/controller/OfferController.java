@@ -8,14 +8,21 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
+//@Secured("ROLE_USER")
 @RestController
+@RequestMapping("/offers")
 public class OfferController {
     /**
      * // Offer Api
@@ -40,7 +47,6 @@ public class OfferController {
     public ResponseEntity<Collection<OfferDto>> getResources() {
         List<OfferDto> offers = offerService.getAllOffers();
         Appender appender = LOGGER.getAppender("ConsoleAppender");
-
         LOGGER.addAppender(appender);
         LOGGER.info("the controller is hit");
         LOGGER.debug("the controller is hit");
@@ -51,4 +57,11 @@ public class OfferController {
     public String getHello(){
         return "Hello";
     }
+
+    @RequestMapping("/admin")
+    @Secured("ROLE_ADMIN")
+    Map<String, Object> manage(@AuthenticationPrincipal Principal user) {
+        return Collections.singletonMap("user", user.getName());
+    }
+
 }

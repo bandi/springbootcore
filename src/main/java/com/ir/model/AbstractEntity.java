@@ -10,7 +10,7 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 @EntityListeners(AuditingEntityListener.class)
-public class AbstractModel {
+public class AbstractEntity {
 
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
